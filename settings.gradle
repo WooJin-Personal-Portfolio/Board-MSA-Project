@@ -1,0 +1,9 @@
+rootProject.name = 'board'
+
+include 'service'
+include 'service:common'
+include 'service:article'
+include 'service:article-read'
+include 'service:comment'
+include 'service:like'
+include 'service:view'

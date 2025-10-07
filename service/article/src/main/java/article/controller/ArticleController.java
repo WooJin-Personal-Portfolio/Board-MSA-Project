@@ -3,7 +3,10 @@ package article.controller;
 import article.controller.dto.request.ArticleCreateRequest;
 import article.controller.dto.request.ArticleUpdateRequest;
 import article.controller.dto.response.ArticleResponse;
+import article.controller.dto.response.ArticlesResponse;
+import article.service.dto.result.ArticleResults;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import article.service.ArticleService;
 import article.service.dto.result.ArticleResult;
@@ -37,5 +40,13 @@ public class ArticleController {
     @DeleteMapping("/{articleId}")
     public void deleteArticle(@PathVariable(name = "articleId") Long articleId) {
         articleService.deleteArticle(articleId);
+    }
+
+    @GetMapping
+    public ArticlesResponse getArticles(@RequestParam(name = "boardId") Long boardId,
+                                        @RequestParam(name = "page", defaultValue = "30") Long page,
+                                        @RequestParam(name = "pageSize", defaultValue = "1") Long pageSize) {
+        ArticleResults articles = articleService.getArticles(boardId, page, pageSize);
+        return ArticlesResponse.of(articles.results(), articles.articleCount());
     }
 }

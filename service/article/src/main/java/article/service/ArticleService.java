@@ -4,6 +4,8 @@ import article.controller.dto.request.ArticleCreateRequest;
 import article.controller.dto.request.ArticleUpdateRequest;
 import article.entity.Article;
 import article.service.dto.command.ArticleCreateCommand;
+import article.service.dto.result.ArticleResults;
+import article.util.PageLimitCalculator;
 import exception.BoardException;
 import key.Snowflake;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import article.repository.ArticleRepository;
 import article.service.dto.result.ArticleResult;
+
+import java.util.List;
 
 import static exception.ErrorCode.ARTICLE_NOT_FOUND;
 
@@ -48,5 +52,19 @@ public class ArticleService {
     @Transactional
     public void deleteArticle(Long articleId) {
         articleRepository.deleteById(articleId);
+    }
+
+    public ArticleResults getArticles(Long boardId, Long page, Long pageSize) {
+        List<Article> articles = articleRepository
+                                .findAll(boardId, (page - 1) * pageSize, pageSize)
+                                .stream().toList();
+        Long articleCount = articleRepository
+                                .countArticles(boardId, PageLimitCalculator.calculatePageLimit(page, pageSize, 30L));
+
+        List<ArticleResult> results = articles
+                                .stream()
+                                .map(ArticleResult::from)
+                                .toList();
+        return ArticleResults.of(results, articleCount);
     }
 }

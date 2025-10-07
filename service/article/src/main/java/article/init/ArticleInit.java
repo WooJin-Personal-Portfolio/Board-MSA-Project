@@ -27,7 +27,7 @@ public class ArticleInit {
 
     Snowflake snowflake = new Snowflake();
 
-    @PostConstruct
+    //@PostConstruct
     void init() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(EXECUTE_SIZE);
         ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -46,7 +46,7 @@ public class ArticleInit {
         executor.shutdown();
     }
 
-    @PreDestroy
+    //@PreDestroy
     void destroy() {
         transactionTemplate.execute(status -> {
             articleRepository.deleteAll();

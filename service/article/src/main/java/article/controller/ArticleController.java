@@ -6,7 +6,6 @@ import article.controller.dto.response.ArticleResponse;
 import article.controller.dto.response.ArticlesResponse;
 import article.service.dto.result.ArticleResults;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import article.service.ArticleService;
 import article.service.dto.result.ArticleResult;

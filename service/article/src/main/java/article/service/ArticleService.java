@@ -23,6 +23,8 @@ import static exception.ErrorCode.ARTICLE_NOT_FOUND;
 @RequiredArgsConstructor
 public class ArticleService {
 
+    private static final Long MOVABLE_PAGE_COUNT = 10L;
+
     private Snowflake snowflake = new Snowflake();
 
     private final ArticleMapper articleMapper;
@@ -59,7 +61,7 @@ public class ArticleService {
                                 .findAll(boardId, (page - 1) * pageSize, pageSize)
                                 .stream().toList();
         Long articleCount = articleRepository
-                                .countArticles(boardId, PageLimitCalculator.calculatePageLimit(page, pageSize, 30L));
+                                .countArticles(boardId, PageLimitCalculator.calculatePageLimit(page, pageSize, MOVABLE_PAGE_COUNT));
 
         List<ArticleResult> results = articles
                                 .stream()
